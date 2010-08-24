@@ -1,6 +1,6 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::Nil;
+# ABSTRACT: An empty L<Data::Stream::Bulk> iterator
+
 use Moose;
 
 use namespace::clean -except => 'meta';
@@ -16,10 +16,10 @@ sub next { undef }
 sub is_done { 1 }
 
 sub list_cat {
-	my ( $self, $head, @rest ) = @_;
+    my ( $self, $head, @rest ) = @_;
 
-	return () unless $head;
-	return $head->list_cat(@rest);
+    return () unless $head;
+    return $head->list_cat(@rest);
 }
 
 sub filter { return $_[0] };
@@ -28,55 +28,42 @@ sub loaded { 1 }
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
-
-__END__
+__PACKAGE__;
 
 =pod
 
-=head1 NAME
-
-Data::Stream::Bulk::Nil - An empty L<Data::Stream::Bulk> iterator
-
 =head1 SYNOPSIS
 
-	return Data::Stream::Bulk::Nil->new; # empty set
+    return Data::Stream::Bulk::Nil->new; # empty set
 
 =head1 DESCRIPTION
 
 This iterator can be used to return the empty resultset.
 
-=head1 METHODS
-
-=over 4
-
-=item is_done
+=method is_done
 
 Always returns true.
 
-=item next
+=method next
 
 Always returns undef.
 
-=item items
+=method items
 
-=item all
+=method all
 
 Always returns the empty list.
 
-=item list_cat
+=method list_cat
 
 Skips $self
 
-=item filter
+=method filter
 
 Returns $self
 
-=item loaded
+=method loaded
 
 Returns true.
 
-=back
-
 =cut
-

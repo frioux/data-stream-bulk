@@ -1,68 +1,66 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk;
+# ABSTRACT: N at a time iteration API
+
 use Moose::Role;
 
 use namespace::clean -except => 'meta';
 
-our $VERSION = "0.07";
-
 requires qw(next is_done);
 
 sub items {
-	my $self = shift;
+    my $self = shift;
 
-	if ( my $a = $self->next ) {
-		return @$a;
-	} else {
-		return ();
-	}
+    if ( my $a = $self->next ) {
+        return @$a;
+    } else {
+        return ();
+    }
 }
 
 sub all {
-	my $self = shift;
+    my $self = shift;
 
-	my @ret;
+    my @ret;
 
-	while ( my $next = $self->next ) {
-		push @ret, @$next;
-	}
+    while ( my $next = $self->next ) {
+        push @ret, @$next;
+    }
 
-	return @ret;
+    return @ret;
 }
 
 sub cat {
-	my ( $self, @streams ) = @_;
+    my ( $self, @streams ) = @_;
 
-	return $self unless @streams;
+    return $self unless @streams;
 
-	my @cat = $self->list_cat(@streams);
+    my @cat = $self->list_cat(@streams);
 
-	unless ( @cat ) {
-		return Data::Stream::Bulk::Nil->new;
-	} elsif ( @cat == 1 ) {
-		return $cat[0];
-	} else {
-		return Data::Stream::Bulk::Cat->new(
-			streams => \@cat,
-		);
-	}
+    unless ( @cat ) {
+        return Data::Stream::Bulk::Nil->new;
+    } elsif ( @cat == 1 ) {
+        return $cat[0];
+    } else {
+        return Data::Stream::Bulk::Cat->new(
+            streams => \@cat,
+        );
+    }
 }
 
 sub list_cat {
-	my ( $self, $head, @tail ) = @_;
+    my ( $self, $head, @tail ) = @_;
 
-	return $self unless $head;
-	return ( $self, $head->list_cat(@tail) );
+    return $self unless $head;
+    return ( $self, $head->list_cat(@tail) );
 }
 
 sub filter {
-	my ( $self, $filter ) = @_;
+    my ( $self, $filter ) = @_;
 
-	return Data::Stream::Bulk::Filter->new(
-		filter => $filter,
-		stream => $self,
-	);
+    return Data::Stream::Bulk::Filter->new(
+        filter => $filter,
+        stream => $self,
+    );
 }
 
 sub loaded { 0 }
@@ -72,34 +70,28 @@ require Data::Stream::Bulk::Cat;
 require Data::Stream::Bulk::Nil;
 require Data::Stream::Bulk::Filter;
 
-__PACKAGE__
-
-__END__
+__PACKAGE__;
 
 =pod
 
-=head1 NAME
-
-Data::Stream::Bulk - N at a time iteration API
-
 =head1 SYNOPSIS
 
-	# get a bulk stream from somewere
-	my $s = Data::Stream::Bulk::Foo->new( ... );
+    # get a bulk stream from somewere
+    my $s = Data::Stream::Bulk::Foo->new( ... );
 
-	# can be used like this:
-	until ( $s->is_done ) {
-		foreach my $item ( $s->items ) {
-			process($item);
-		}
-	}
+    # can be used like this:
+    until ( $s->is_done ) {
+        foreach my $item ( $s->items ) {
+            process($item);
+        }
+    }
 
-	# or like this:
-	while( my $block = $s->next ) {
-		foreach my $item ( @$block ) {
-			process($item);
-		}
-	}
+    # or like this:
+    while( my $block = $s->next ) {
+        foreach my $item ( @$block ) {
+            process($item);
+        }
+    }
 
 =head1 DESCRIPTION
 
@@ -266,20 +258,4 @@ L<Moose::Util::TypeConstraints>
 
 =back
 
-=head1 VERSION CONTROL
-
-This module is maintained using git. You can get the latest version from
-L<http://github.com/nothingmuch/data-stream-bulk/>.
-
-=head1 AUTHOR
-
-Yuval Kogman E<lt>nothingmuch@woobling.orgE<gt>
-
-=head1 COPYRIGHT
-
-	Copyright (c) 2008 Yuval Kogman. All rights reserved
-	This program is free software; you can redistribute
-	it and/or modify it under the same terms as Perl itself.
-
 =cut
-

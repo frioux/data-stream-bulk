@@ -8,73 +8,73 @@ use Test::More;
 our $dbh;
 
 BEGIN {
-	plan skip_all => $@ unless eval { 
-		require DBI;
-		require DBD::Mock;
-		DBD::Mock->VERSION("1.37");
-		$dbh = DBI->connect( 'DBI:Mock:', '', '' )
-			|| die "Cannot create handle: $DBI::errstr\n"
-	};
+    plan skip_all => $@ unless eval {
+        require DBI;
+        require DBD::Mock;
+        DBD::Mock->VERSION("1.37");
+        $dbh = DBI->connect( 'DBI:Mock:', '', '' )
+            || die "Cannot create handle: $DBI::errstr\n"
+    };
 
-	plan 'no_plan';
+    plan 'no_plan';
 }
 
 use ok 'Data::Stream::Bulk::DBI';
 
 my @data = (
-	[ qw(col1 col2 col3) ],
-	[ qw(foo bar gorch) ],
-	[ qw(zot oi lalala) ],
-	[ qw(those meddling kids) ],
+    [ qw(col1 col2 col3) ],
+    [ qw(foo bar gorch) ],
+    [ qw(zot oi lalala) ],
+    [ qw(those meddling kids) ],
 );
 
 {
-	$dbh->{mock_add_resultset} = [ @data ];
+    $dbh->{mock_add_resultset} = [ @data ];
 
-	my $sth = $dbh->prepare("SELECT * FROM foo;");
+    my $sth = $dbh->prepare("SELECT * FROM foo;");
 
-	$sth->execute;
+    $sth->execute;
 
-	my $d = Data::Stream::Bulk::DBI->new(
-		sth => $sth,
-		max_rows => 2,
-	);
+    my $d = Data::Stream::Bulk::DBI->new(
+        sth => $sth,
+        max_rows => 2,
+    );
 
-	ok( !$d->is_done, "not yet done" );
+    ok( !$d->is_done, "not yet done" );
 
-	is_deeply( $d->next, [ @data[1,2] ], "two rows" );
+    is_deeply( $d->next, [ @data[1,2] ], "two rows" );
 
-	ok( !$d->is_done, "not yet done" );
+    ok( !$d->is_done, "not yet done" );
 
-	is_deeply( [ $d->items ], [ $data[3] ], "one more" );
+    is_deeply( [ $d->items ], [ $data[3] ], "one more" );
 
-	ok( !$d->is_done, "not yet done" );
+    ok( !$d->is_done, "not yet done" );
 
-	is_deeply( [ $d->items ], [ ], "no more" );
+    is_deeply( [ $d->items ], [ ], "no more" );
 
-	ok( $d->is_done, "now we're done" );
+    ok( $d->is_done, "now we're done" );
 
 }
 
 {
-	$dbh->{mock_add_resultset} = [ @data ];
+    $dbh->{mock_add_resultset} = [ @data ];
 
-	my $sth = $dbh->prepare("SELECT * FROM foo;");
+    my $sth = $dbh->prepare("SELECT * FROM foo;");
 
-	$sth->execute;
+    $sth->execute;
 
-	my $d = Data::Stream::Bulk::DBI->new(
-		sth => $sth,
-		max_rows => 1,
-	);
+    my $d = Data::Stream::Bulk::DBI->new(
+        sth => $sth,
+        max_rows => 1,
+    );
 
-	ok( !$d->is_done, "not yet done" );
+    ok( !$d->is_done, "not yet done" );
 
-	is_deeply( $d->next, [ $data[1] ], "one row" );
+    is_deeply( $d->next, [ $data[1] ], "one row" );
 
-	ok( !$d->is_done, "not yet done" );
+    ok( !$d->is_done, "not yet done" );
 
-	is_deeply( [ $d->all ], [ @data[2,3] ], "all remaining rows" );
+    is_deeply( [ $d->all ], [ @data[2,3] ], "all remaining rows" );
 
-	ok( $d->is_done, "now we're done" );
+    ok( $d->is_done, "now we're done" );
 }

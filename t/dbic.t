@@ -8,72 +8,72 @@ use Test::More;
 our $schema;
 
 BEGIN {
-	plan skip_all => $@ unless eval { 
-		require DBIx::Class;
-		require DBI;
-		require DBD::SQLite;
-		require Test::TempDir;
-		Test::TempDir->import('temp_root');
-		1;
-	}
+    plan skip_all => $@ unless eval {
+        require DBIx::Class;
+        require DBI;
+        require DBD::SQLite;
+        require Test::TempDir;
+        Test::TempDir->import('temp_root');
+        1;
+    }
 }
 
 BEGIN {
-	plan skip_all => $@ unless eval {
-		{
-			package Schema::Foo;
-			use base qw(DBIx::Class);
+    plan skip_all => $@ unless eval {
+        {
+            package Schema::Foo;
+            use base qw(DBIx::Class);
 
-			__PACKAGE__->load_components(qw(Core));
+            __PACKAGE__->load_components(qw(Core));
 
-			__PACKAGE__->table("foo");
+            __PACKAGE__->table("foo");
 
-			__PACKAGE__->add_columns(qw(id name));
+            __PACKAGE__->add_columns(qw(id name));
 
-			__PACKAGE__->set_primary_key("id");
+            __PACKAGE__->set_primary_key("id");
 
-			package Schema;
-			use base qw(DBIx::Class::Schema);
+            package Schema;
+            use base qw(DBIx::Class::Schema);
 
-			__PACKAGE__->load_classes(qw(Foo));
+            __PACKAGE__->load_classes(qw(Foo));
 
-			1;
-		}
+            1;
+        }
 
-		my $file = temp_root()->file("db");
-		$schema = Schema->connect("dbi:SQLite:dbname=$file", undef, undef, { RaiseError => 1 } );
-		$schema->storage->dbh->do("create table foo ( id integer primary key, name varchar )");
-	};
+        my $file = temp_root()->file("db");
+        $schema = Schema->connect("dbi:SQLite:dbname=$file", undef, undef, { RaiseError => 1 } );
+        $schema->storage->dbh->do("create table foo ( id integer primary key, name varchar )");
+    };
 
-	plan 'no_plan';
+    plan 'no_plan';
 }
 
 use ok 'Data::Stream::Bulk::DBIC';
 
 {
-	my $d = Data::Stream::Bulk::DBIC->new( resultset => $schema->resultset("Foo") );
+    my $d = Data::Stream::Bulk::DBIC->new( resultset => $schema->resultset("Foo") );
 
-	ok( !$d->is_done, "not done" );
+    ok( !$d->is_done, "not done" );
 
-	is_deeply( [ $d->items ], [], "no items" );
+    is_deeply( [ $d->items ], [], "no items" );
 
-	ok( $d->is_done, "now done" );
+    ok( $d->is_done, "now done" );
 }
 
 {
-	$schema->resultset("Foo")->populate([
-		{ name => "hello" },
-		{ name => "goodbye" },
-	]);
+    $schema->resultset("Foo")->populate([
+        { name => "hello" },
+        { name => "goodbye" },
+    ]);
 
-	my $d = Data::Stream::Bulk::DBIC->new( resultset => $schema->resultset("Foo") );
+    my $d = Data::Stream::Bulk::DBIC->new( resultset => $schema->resultset("Foo") );
 
-	ok( !$d->is_done, "not done" );
-	is_deeply( [ map { $_->name } $d->items ], [ "hello" ], "one item" );
-	ok( !$d->is_done, "not done" );
-	is_deeply( [ map { $_->name } $d->items ], [ "goodbye" ], "one item" );
-	ok( !$d->is_done, "not done" );
-	is_deeply( [ $d->items ], [], "no items" );
+    ok( !$d->is_done, "not done" );
+    is_deeply( [ map { $_->name } $d->items ], [ "hello" ], "one item" );
+    ok( !$d->is_done, "not done" );
+    is_deeply( [ map { $_->name } $d->items ], [ "goodbye" ], "one item" );
+    ok( !$d->is_done, "not done" );
+    is_deeply( [ $d->items ], [], "no items" );
 
-	ok( $d->is_done, "now done" );
+    ok( $d->is_done, "now done" );
 }

@@ -1,6 +1,6 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::DoneFlag;
+# ABSTRACT: Implement the C<is_done> method in terms of a flag
+
 use Moose::Role;
 
 use namespace::clean -except => 'meta';
@@ -11,60 +11,53 @@ requires "get_more";
 
 sub is_done {}
 has done => (
-	isa => "Bool",
-	init_arg => undef,
-	reader => "is_done",
-	writer => "_done",
+    isa => "Bool",
+    init_arg => undef,
+    reader => "is_done",
+    writer => "_done",
 );
 
 sub finished {}
 
 sub _set_done {
-	my $self = shift;
-	$self->_done(1);
-	$self->finished;
+    my $self = shift;
+    $self->_done(1);
+    $self->finished;
 }
 
 sub next {
-	my $self = shift;
+    my $self = shift;
 
-	unless ( $self->is_done ) {
-		if ( my $more = $self->get_more ) {
-			return $more;
-		} else {
-			$self->_set_done;
-			return;
-		}
-	} else {
-		return;
-	}
+    unless ( $self->is_done ) {
+        if ( my $more = $self->get_more ) {
+            return $more;
+        } else {
+            $self->_set_done;
+            return;
+        }
+    } else {
+        return;
+    }
 }
 
-__PACKAGE__
-
-__END__
+__PACKAGE__;
 
 =pod
 
-=head1 NAME
-
-Data::Stream::Bulk::DoneFlag - Implement the C<is_done> method in terms of a
-flag
-
 =head1 SYNOPSIS
 
-	package Data::Stream::Bulk::Blah;
-	use Moose;
+    package Data::Stream::Bulk::Blah;
+    use Moose;
 
-	with qw(Data::Stream::Bulk::DoneFlag);
+    with qw(Data::Stream::Bulk::DoneFlag);
 
-	sub get_more {
-		if ( my @more = more() ) {
-			return \@more;
-		} else {
-			return;
-		}
-	}
+    sub get_more {
+        if ( my @more = more() ) {
+            return \@more;
+        } else {
+            return;
+        }
+    }
 
 =head1 DESCRIPTION
 
@@ -77,15 +70,11 @@ cleanup may be done.
 This is used by classes like L<Data::Stream::Bulk::DBI>,
 L<Data::Stream::Bulk::Callback>.
 
-=head1 METHODS
-
-=over 4
-
-=item is_done
+=method is_done
 
 Returns the state of the iterator.
 
-=item next
+=method next
 
 As long as the iterator is not yet done, calls C<get_more>.
 
@@ -93,21 +82,15 @@ If C<get_more> returned a false value instead of an array reference then
 C<done> is set, C<finished> is called, and this C<next> does nothing on
 subsequent calls.
 
-=item finished
+=method finished
 
 A noop by default. Can be overridden if so desired.
 
-=back
+=head1 REQUIRED METHODS
 
-=head1 REQUIRED_METHODS
-
-=over 4
-
-=item get_more
+=head2 get_more
 
 Returns the next block of data as an array ref, or a false value if no items
 are left.
-
-=back
 
 =cut
