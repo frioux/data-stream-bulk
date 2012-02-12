@@ -1,11 +1,10 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::Cat;
 use Moose;
+# ABSTRACT: Concatenated streams
 
 use namespace::clean -except => 'meta';
 
-with qw(Data::Stream::Bulk) => { excludes => 'list_cat' };
+with qw(Data::Stream::Bulk) => { -excludes => 'list_cat' };
 
 has streams => (
 	isa => "ArrayRef[Data::Stream::Bulk]",
@@ -44,15 +43,11 @@ sub list_cat {
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::Cat - Concatenated streams
 
 =head1 SYNOPSIS
 
@@ -89,5 +84,3 @@ allowing L<Data::Stream::Bulk::Array/list_cat> to work better.
 =back
 
 =cut
-
-

@@ -1,7 +1,6 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::Filter;
 use Moose;
+# ABSTRACT: Streamed filtering (block oriented)
 
 use Data::Stream::Bulk;
 
@@ -20,7 +19,7 @@ has stream => (
 	handles  => [qw(is_done loaded)],
 );
 
-with qw(Data::Stream::Bulk) => { excludes => 'loaded' };
+with qw(Data::Stream::Bulk) => { -excludes => 'loaded' };
 
 sub next {
 	my $self = shift;
@@ -31,15 +30,11 @@ sub next {
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::Filter - Streamed filtering (block oriented)
 
 =head1 SYNOPSIS
 
@@ -91,5 +86,3 @@ Calls C<next> on C<stream> and applies C<filter> if a block was returned.
 =back
 
 =cut
-
-

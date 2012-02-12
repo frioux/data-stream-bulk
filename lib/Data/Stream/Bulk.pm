@@ -1,11 +1,8 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk;
 use Moose::Role;
+# ABSTRACT: N at a time iteration API
 
 use namespace::clean -except => 'meta';
-
-our $VERSION = "0.07";
 
 requires qw(next is_done);
 
@@ -72,15 +69,11 @@ require Data::Stream::Bulk::Cat;
 require Data::Stream::Bulk::Nil;
 require Data::Stream::Bulk::Filter;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk - N at a time iteration API
 
 =head1 SYNOPSIS
 
@@ -271,15 +264,4 @@ L<Moose::Util::TypeConstraints>
 This module is maintained using git. You can get the latest version from
 L<http://github.com/nothingmuch/data-stream-bulk/>.
 
-=head1 AUTHOR
-
-Yuval Kogman E<lt>nothingmuch@woobling.orgE<gt>
-
-=head1 COPYRIGHT
-
-	Copyright (c) 2008 Yuval Kogman. All rights reserved
-	This program is free software; you can redistribute
-	it and/or modify it under the same terms as Perl itself.
-
 =cut
-

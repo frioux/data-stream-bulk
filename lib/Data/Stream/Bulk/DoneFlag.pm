@@ -1,7 +1,6 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::DoneFlag;
 use Moose::Role;
+# ABSTRACT: Implement the C<is_done> method in terms of a flag
 
 use namespace::clean -except => 'meta';
 
@@ -40,16 +39,11 @@ sub next {
 	}
 }
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::DoneFlag - Implement the C<is_done> method in terms of a
-flag
 
 =head1 SYNOPSIS
 

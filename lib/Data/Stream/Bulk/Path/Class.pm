@@ -1,7 +1,6 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::Path::Class;
 use Moose;
+# ABSTRACT: L<Path::Class::Dir> traversal
 
 use Path::Class;
 use Carp qw(croak);
@@ -127,15 +126,11 @@ sub next {
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::Path::Class - L<Path::Class::Dir> traversal
 
 =head1 SYNOPSIS
 
@@ -187,5 +182,3 @@ Returns the next chunk of L<Path::Class> objects
 =back
 
 =cut
-
-

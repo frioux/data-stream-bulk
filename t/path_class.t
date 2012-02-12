@@ -5,12 +5,9 @@ use warnings;
 
 use Test::More;
 
-BEGIN {
-	plan skip_all => $@ unless eval { require Path::Class };
-	plan 'no_plan';
-}
+use Test::Requires 'Path::Class';
 
-use ok 'Data::Stream::Bulk::Path::Class';
+use Data::Stream::Bulk::Path::Class;
 
 use Path::Class;
 
@@ -112,3 +109,5 @@ foreach my $dir ( $dist->subdir("t"), $dist->subdir("lib"), $dist ) {
 		);
 	}
 }
+
+done_testing;

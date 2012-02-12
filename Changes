@@ -1,3 +1,5 @@
+{{$NEXT}}
+
 0.07
 	- Fix new warnings in Moose about overwriting methods
 

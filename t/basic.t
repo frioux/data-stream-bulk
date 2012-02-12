@@ -3,12 +3,12 @@
 use strict;
 use warnings;
 
-use Test::More 'no_plan';
+use Test::More;
 
-use ok 'Data::Stream::Bulk::Nil';
-use ok 'Data::Stream::Bulk::Array';
-use ok 'Data::Stream::Bulk::Callback';
-use ok 'Data::Stream::Bulk::Util' => qw(bulk nil cat filter unique);
+use Data::Stream::Bulk::Nil;
+use Data::Stream::Bulk::Array;
+use Data::Stream::Bulk::Callback;
+use Data::Stream::Bulk::Util qw(bulk nil cat filter unique);
 
 {
 	my $d = Data::Stream::Bulk::Nil->new;
@@ -241,3 +241,4 @@ use ok 'Data::Stream::Bulk::Util' => qw(bulk nil cat filter unique);
 	is_deeply([ $a->all ], [ $foo, $bar, $gorch ], "unique with refs" );
 }
 
+done_testing;

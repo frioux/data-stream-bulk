@@ -1,9 +1,8 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::Util;
 
 use strict;
 use warnings;
+# ABSTRACT: Utility functions for L<Data::Stream::Bulk>
 
 use Data::Stream::Bulk::Nil;
 use Data::Stream::Bulk::Array;
@@ -33,15 +32,11 @@ sub unique ($) {
 	shift->filter(sub { [ grep { !$seen{ref($_) ? refaddr($_) : $_}++ } @$_ ] }); # FIXME Hash::Util::FieldHash::Compat::id()?
 }
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::Util - Utility functions for L<Data::Stream::Bulk>
 
 =head1 SYNOPSIS
 
@@ -100,4 +95,3 @@ References are keyed by their refaddr (see L<Hash::Util::FieldHash/id>).
 =back
 
 =cut
-

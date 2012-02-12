@@ -1,11 +1,10 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::DBI;
 use Moose;
+# ABSTRACT: N-at-a-time iteration of L<DBI> statement results.
 
 use namespace::clean -except => 'meta';
 
-with qw(Data::Stream::Bulk::DoneFlag) => { excludes => [qw/is_done all finished/] };
+with qw(Data::Stream::Bulk::DoneFlag) => { -excludes => [qw/is_done all finished/] };
 
 has sth => (
 	isa => "Object",
@@ -42,15 +41,11 @@ sub all {
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::DBI - N-at-a-time iteration of L<DBI> statement results.
 
 =head1 SYNOPSIS
 
@@ -111,4 +106,3 @@ C<max_rows>).
 =back
 
 =cut
-

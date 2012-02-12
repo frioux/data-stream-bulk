@@ -5,21 +5,21 @@ use warnings;
 
 use Test::More;
 
+use Test::Requires {
+    'DBI'       => 0,
+    'DBD::Mock' => 1.37,
+};
+
 our $dbh;
 
 BEGIN {
-	plan skip_all => $@ unless eval { 
-		require DBI;
-		require DBD::Mock;
-		DBD::Mock->VERSION("1.37");
+	plan skip_all => $@ unless eval {
 		$dbh = DBI->connect( 'DBI:Mock:', '', '' )
 			|| die "Cannot create handle: $DBI::errstr\n"
 	};
-
-	plan 'no_plan';
 }
 
-use ok 'Data::Stream::Bulk::DBI';
+use Data::Stream::Bulk::DBI;
 
 my @data = (
 	[ qw(col1 col2 col3) ],
@@ -78,3 +78,5 @@ my @data = (
 
 	ok( $d->is_done, "now we're done" );
 }
+
+done_testing;

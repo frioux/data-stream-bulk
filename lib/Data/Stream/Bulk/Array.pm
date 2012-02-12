@@ -1,11 +1,10 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::Array;
 use Moose;
+# ABSTRACT: L<Data::Stream::Bulk> wrapper for simple arrays.
 
 use namespace::clean -except => 'meta';
 
-with qw(Data::Stream::Bulk) => { excludes => [qw/loaded filter list_cat/] };
+with qw(Data::Stream::Bulk) => { -excludes => [qw/loaded filter list_cat/] };
 
 has array => (
 	isa => "ArrayRef",
@@ -66,15 +65,11 @@ sub loaded { 1 }
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::Array - L<Data::Stream::Bulk> wrapper for simple arrays.
 
 =head1 SYNOPSIS
 

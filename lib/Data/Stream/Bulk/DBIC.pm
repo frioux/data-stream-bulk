@@ -1,11 +1,10 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::DBIC;
 use Moose;
+# ABSTRACT: Iterate DBIC resultsets with L<Data::Stream::Bulk>
 
 use namespace::clean -except => 'meta';
 
-with qw(Data::Stream::Bulk::DoneFlag) => { excludes => [qw(is_done finished)] };
+with qw(Data::Stream::Bulk::DoneFlag) => { -excludes => [qw(is_done finished)] };
 
 has resultset => (
 	isa => "Object",
@@ -26,15 +25,11 @@ sub get_more {
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::DBIC - Iterate DBIC resultsets with L<Data::Stream::Bulk>
 
 =head1 SYNOPSIS
 

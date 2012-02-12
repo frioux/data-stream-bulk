@@ -1,11 +1,10 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::Callback;
 use Moose;
+# ABSTRACT: Callback based bulk iterator
 
 use namespace::clean -except => 'meta';
 
-with qw(Data::Stream::Bulk::DoneFlag) => { excludes => [qw(is_done finished)] };
+with qw(Data::Stream::Bulk::DoneFlag) => { -excludes => [qw(is_done finished)] };
 
 has callback => (
 	isa => "CodeRef|Str",
@@ -22,15 +21,11 @@ sub get_more {
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::Callback - Callback based bulk iterator
 
 =head1 SYNOPSIS
 
@@ -74,4 +69,3 @@ Reinvokes C<callback>.
 =back
 
 =cut
-

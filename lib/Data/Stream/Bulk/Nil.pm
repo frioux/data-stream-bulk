@@ -1,11 +1,10 @@
-#!/usr/bin/perl
-
 package Data::Stream::Bulk::Nil;
 use Moose;
+# ABSTRACT: An empty L<Data::Stream::Bulk> iterator
 
 use namespace::clean -except => 'meta';
 
-with qw(Data::Stream::Bulk) => { excludes => [qw/loaded filter list_cat all items/] };
+with qw(Data::Stream::Bulk) => { -excludes => [qw/loaded filter list_cat all items/] };
 
 sub items { return () }
 
@@ -28,15 +27,11 @@ sub loaded { 1 }
 
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__
+__PACKAGE__;
 
 __END__
 
 =pod
-
-=head1 NAME
-
-Data::Stream::Bulk::Nil - An empty L<Data::Stream::Bulk> iterator
 
 =head1 SYNOPSIS
 
@@ -79,4 +74,3 @@ Returns true.
 =back
 
 =cut
-

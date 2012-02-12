@@ -5,18 +5,16 @@ use warnings;
 
 use Test::More;
 
-our $schema;
+use Test::Requires qw(
+    DBIx::Class
+    DBI
+    DBD::SQLite
+    Test::TempDir
+);
 
-BEGIN {
-	plan skip_all => $@ unless eval { 
-		require DBIx::Class;
-		require DBI;
-		require DBD::SQLite;
-		require Test::TempDir;
-		Test::TempDir->import('temp_root');
-		1;
-	}
-}
+use Test::TempDir 'temp_root';
+
+our $schema;
 
 BEGIN {
 	plan skip_all => $@ unless eval {
@@ -44,11 +42,9 @@ BEGIN {
 		$schema = Schema->connect("dbi:SQLite:dbname=$file", undef, undef, { RaiseError => 1 } );
 		$schema->storage->dbh->do("create table foo ( id integer primary key, name varchar )");
 	};
-
-	plan 'no_plan';
 }
 
-use ok 'Data::Stream::Bulk::DBIC';
+use Data::Stream::Bulk::DBIC;
 
 {
 	my $d = Data::Stream::Bulk::DBIC->new( resultset => $schema->resultset("Foo") );
@@ -77,3 +73,5 @@ use ok 'Data::Stream::Bulk::DBIC';
 
 	ok( $d->is_done, "now done" );
 }
+
+done_testing;
