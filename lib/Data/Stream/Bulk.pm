@@ -62,10 +62,20 @@ sub filter {
 	);
 }
 
+sub chunk {
+    my ( $self, $chunk_size ) = @_;
+
+    return Data::Stream::Bulk::Chunked->new(
+        chunk_size => $chunk_size,
+        stream     => $self,
+    );
+}
+
 sub loaded { 0 }
 
 # load it *after* the entire role is defined
 require Data::Stream::Bulk::Cat;
+require Data::Stream::Bulk::Chunked;
 require Data::Stream::Bulk::Nil;
 require Data::Stream::Bulk::Filter;
 
@@ -171,6 +181,11 @@ Returns a possibly new stream with the filtering layered.
 C<$filter> is invoked once per block and should return an array reference to
 the filtered block.
 
+=item chunk $chunk_size
+
+Chunks the input stream so that each block returned by C<next> will have at
+least C<$chunk_size> items.
+
 =item loaded
 
 Should be overridden to return true if all the items are already realized (e.g.
@@ -199,6 +214,10 @@ with larger data sets.
 =item L<Data::Stream::Bulk::Callback>
 
 Callback driven iteration.
+
+=item L<Data::Stream::Bulk::Chunked>
+
+Wrapper to return larger blocks from an existing stream.
 
 =item L<Data::Stream::Bulk::DBI>
 

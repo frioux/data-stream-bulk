@@ -241,4 +241,24 @@ use Data::Stream::Bulk::Util qw(bulk nil cat filter unique);
 	is_deeply([ $a->all ], [ $foo, $bar, $gorch ], "unique with refs" );
 }
 
+{
+    my $i = 0;
+    my $cb = sub {
+        $i++;
+        return if $i > 6;
+        return [ ($i) x $i ];
+    };
+
+    my $s = Data::Stream::Bulk::Callback->new(callback => $cb)->chunk(5);
+
+    isa_ok( $s, 'Data::Stream::Bulk::Chunked' );
+
+    ok( !$s->is_done, "stream is not done");
+    is_deeply( $s->next, [ 1, 2, 2, 3, 3, 3 ] );
+    is_deeply( $s->next, [ 4, 4, 4, 4, 5, 5, 5, 5, 5 ] );
+    is_deeply( $s->next, [ 6, 6, 6, 6, 6, 6 ] );
+    ok( !defined($s->next), "stream is done" );
+    ok( $s->is_done, "stream is done" );
+}
+
 done_testing;
