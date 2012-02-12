@@ -8,6 +8,7 @@ use Test::More;
 use Data::Stream::Bulk::Nil;
 use Data::Stream::Bulk::Array;
 use Data::Stream::Bulk::Callback;
+use Data::Stream::Bulk::FileHandle;
 use Data::Stream::Bulk::Util qw(bulk nil cat filter unique);
 
 {
@@ -258,6 +259,29 @@ use Data::Stream::Bulk::Util qw(bulk nil cat filter unique);
     is_deeply( $s->next, [ 4, 4, 4, 4, 5, 5, 5, 5, 5 ] );
     is_deeply( $s->next, [ 6, 6, 6, 6, 6, 6 ] );
     ok( !defined($s->next), "stream is done" );
+    ok( $s->is_done, "stream is done" );
+}
+
+{
+    my $text = <<'TEXT';
+foo
+bar baz
+
+quux
+TEXT
+    chomp $text;
+
+    open my $fh, '<', \$text or die "Couldn't open string: $!";
+    my $s = Data::Stream::Bulk::FileHandle->new(filehandle => $fh);
+
+    isa_ok( $s, 'Data::Stream::Bulk::FileHandle' );
+
+    ok( !$s->is_done, "stream is not done");
+    is_deeply( $s->next, [ "foo\n" ] );
+    is_deeply( $s->next, [ "bar baz\n" ] );
+    is_deeply( $s->next, [ "\n" ] );
+    is_deeply( $s->next, [ "quux" ] );
+    ok( !defined($s->next), "stream is done");
     ok( $s->is_done, "stream is done" );
 }
 

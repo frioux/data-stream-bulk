@@ -227,6 +227,10 @@ Bulk fetching of data from L<DBI> statement handles.
 
 L<DBIx::Class::ResultSet> iteration.
 
+=item L<Data::Stream::Bulk::FileHandle>
+
+Iterates over lines in a text file.
+
 =item L<Data::Stream::Bulk::Nil>
 
 An empty result set.
