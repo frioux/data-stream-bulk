@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.08  2012-02-12
         - Convert to dzil
         - Add ::Chunked for combining incoming blocks into larger blocks
         - Add ::FileHandle for iterating over lines in a text file
