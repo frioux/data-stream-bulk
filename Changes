@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.10  2012-02-12
         - Fix ::FileHandle on pre-5.14 perls
 
 0.09  2012-02-12
