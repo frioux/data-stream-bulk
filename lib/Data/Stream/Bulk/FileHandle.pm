@@ -4,6 +4,8 @@ use Moose;
 
 use namespace::clean -except => 'meta';
 
+use IO::Handle;
+
 with 'Data::Stream::Bulk::DoneFlag';
 
 has filehandle => (
