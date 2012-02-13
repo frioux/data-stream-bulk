@@ -1,4 +1,5 @@
 {{$NEXT}}
+        - Fix ::FileHandle on pre-5.14 perls
 
 0.09  2012-02-12
         - oops, missed rafl's upload, rerelease with the correct version number
