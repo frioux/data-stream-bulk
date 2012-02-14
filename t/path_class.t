@@ -5,8 +5,6 @@ use warnings;
 
 use Test::More;
 
-use Test::Requires 'Path::Class';
-
 use Data::Stream::Bulk::Path::Class;
 
 use Path::Class;
