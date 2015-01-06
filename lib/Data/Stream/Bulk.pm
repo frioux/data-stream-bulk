@@ -196,8 +196,8 @@ Returns false by default.
 When true calling C<all> is supposed to be safe (memory usage should be in the
 same order of magnitude as stream's own usage).
 
-This is typically useful when tranforming an array is easier than transorming a
-stream (e.g. optional duplicate filtering).
+This is typically useful when tranforming an array is easier than transforming
+a stream (e.g. optional duplicate filtering).
 
 =back
 
