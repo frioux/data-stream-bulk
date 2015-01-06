@@ -285,6 +285,6 @@ L<Moose::Util::TypeConstraints>
 =head1 VERSION CONTROL
 
 This module is maintained using git. You can get the latest version from
-L<http://github.com/nothingmuch/data-stream-bulk/>.
+L<http://github.com/doy/data-stream-bulk/>.
 
 =cut
