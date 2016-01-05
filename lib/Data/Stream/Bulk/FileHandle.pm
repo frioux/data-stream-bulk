@@ -1,6 +1,8 @@
 package Data::Stream::Bulk::FileHandle;
-use Moose;
+use Moo;
 # ABSTRACT: read lines from a filehandle
+
+use Types::Standard 'FileHandle';
 
 use namespace::clean -except => 'meta';
 
@@ -10,7 +12,7 @@ with 'Data::Stream::Bulk::DoneFlag';
 
 has filehandle => (
     is       => 'ro',
-    isa      => 'FileHandle',
+    isa      => FileHandle,
     required => 1,
 );
 
@@ -21,8 +23,6 @@ sub get_more {
     return unless defined $line;
     return [ $line ];
 }
-
-__PACKAGE__->meta->make_immutable;
 
 =head1 SYNOPSIS
 

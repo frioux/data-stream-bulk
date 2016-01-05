@@ -2,12 +2,14 @@ package Data::Stream::Bulk::DBI;
 use Moose;
 # ABSTRACT: N-at-a-time iteration of L<DBI> statement results.
 
+use Types::Standard qw( Object Int );
+
 use namespace::clean -except => 'meta';
 
 with qw(Data::Stream::Bulk::DoneFlag) => { -excludes => [qw/is_done all finished/] };
 
 has sth => (
-	isa => "Object",
+	isa => Object,
 	is  => "ro",
 	required => 1,
 	handles => [qw(fetchall_arrayref)],
@@ -19,7 +21,7 @@ has slice => (
 );
 
 has max_rows => (
-	isa => "Int",
+	isa => Int,
 	is  => "rw",
 	default => 500,
 );
@@ -38,8 +40,6 @@ sub all {
 
 	return @$all;
 }
-
-__PACKAGE__->meta->make_immutable;
 
 __PACKAGE__;
 

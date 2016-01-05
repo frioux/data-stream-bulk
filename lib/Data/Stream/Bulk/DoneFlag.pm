@@ -2,6 +2,8 @@ package Data::Stream::Bulk::DoneFlag;
 use Moose::Role;
 # ABSTRACT: Implement the C<is_done> method in terms of a flag
 
+use Types::Standard 'Bool';
+
 use namespace::clean -except => 'meta';
 
 with qw(Data::Stream::Bulk);
@@ -10,7 +12,7 @@ requires "get_more";
 
 sub is_done {}
 has done => (
-	isa => "Bool",
+	isa => Bool,
 	init_arg => undef,
 	reader => "is_done",
 	writer => "_done",

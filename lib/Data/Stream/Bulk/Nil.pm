@@ -1,5 +1,5 @@
 package Data::Stream::Bulk::Nil;
-use Moose;
+use Moo;
 # ABSTRACT: An empty L<Data::Stream::Bulk> iterator
 
 use namespace::clean -except => 'meta';
@@ -24,8 +24,6 @@ sub list_cat {
 sub filter { return $_[0] };
 
 sub loaded { 1 }
-
-__PACKAGE__->meta->make_immutable;
 
 __PACKAGE__;
 

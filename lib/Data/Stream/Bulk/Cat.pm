@@ -1,13 +1,13 @@
 package Data::Stream::Bulk::Cat;
-use Moose;
+use Moo;
 # ABSTRACT: Concatenated streams
-
+use Types::Standard qw(ArrayRef InstanceOf);
 use namespace::clean -except => 'meta';
 
 with qw(Data::Stream::Bulk) => { -excludes => 'list_cat' };
 
 has streams => (
-	isa => "ArrayRef[Data::Stream::Bulk]",
+	# isa => ArrayRef[InstanceOf['Data::Stream::Bulk']],
 	is  => "ro",
 	required => 1,
 );
@@ -40,8 +40,6 @@ sub list_cat {
 	return () unless $head;
 	return $head->list_cat(@tail);
 }
-
-__PACKAGE__->meta->make_immutable;
 
 __PACKAGE__;
 

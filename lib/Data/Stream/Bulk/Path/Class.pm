@@ -1,6 +1,8 @@
 package Data::Stream::Bulk::Path::Class;
-use Moose;
+use Moo;
 # ABSTRACT: L<Path::Class::Dir> traversal
+
+use Types::Standard qw(Bool Int ArrayRef);
 
 use Path::Class;
 use Carp qw(croak);
@@ -16,30 +18,30 @@ has dir => (
 );
 
 has depth_first => (
-	isa => "Bool",
+	isa => Bool,
 	is  => "rw",
 	default => 1,
 );
 
 has only_files => (
-	isa => "Bool",
+	isa => Bool,
 	is  => "ro",
 );
 
 has chunk_size => (
-	isa => "Int",
+	isa => Int,
 	is  => "rw",
 	default => 250,
 );
 
 has _stack => (
-	isa => "ArrayRef",
+	isa => ArrayRef,
 	is  => "ro",
 	default => sub { [] },
 );
 
 has _queue => (
-	isa => "ArrayRef",
+	isa => ArrayRef,
 	is  => "ro",
 	lazy => 1,
 	default => sub {
@@ -122,9 +124,6 @@ sub next {
 	return unless @ret;
 	return \@ret;
 }
-
-
-__PACKAGE__->meta->make_immutable;
 
 __PACKAGE__;
 

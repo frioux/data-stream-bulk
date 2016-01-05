@@ -1,6 +1,8 @@
 package Data::Stream::Bulk::Chunked;
-use Moose;
+use Moo;
 # ABSTRACT: combine streams into larger chunks
+
+use Types::Standard 'Int';
 
 use namespace::clean -except => 'meta';
 
@@ -14,7 +16,7 @@ has stream => (
 
 has chunk_size => (
     is      => 'ro',
-    isa     => 'Int',
+    isa     => Int,
     default => 1,
 );
 
@@ -31,8 +33,6 @@ sub get_more {
     return unless @data;
     return \@data;
 }
-
-__PACKAGE__->meta->make_immutable;
 
 =head1 SYNOPSIS
 

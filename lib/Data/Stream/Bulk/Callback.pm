@@ -1,13 +1,13 @@
 package Data::Stream::Bulk::Callback;
-use Moose;
+use Moo;
 # ABSTRACT: Callback based bulk iterator
-
+use Types::Standard qw( CodeRef Str );
 use namespace::clean -except => 'meta';
 
 with qw(Data::Stream::Bulk::DoneFlag) => { -excludes => [qw(is_done finished)] };
 
 has callback => (
-	isa => "CodeRef|Str",
+	isa => CodeRef|Str,
 	is  => "ro",
 	required => 1,
 	clearer  => "finished",
@@ -18,8 +18,6 @@ sub get_more {
 	my $cb = $self->callback;
 	$self->$cb;
 }
-
-__PACKAGE__->meta->make_immutable;
 
 __PACKAGE__;
 

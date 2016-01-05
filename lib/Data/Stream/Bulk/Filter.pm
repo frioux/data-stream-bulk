@@ -1,13 +1,15 @@
 package Data::Stream::Bulk::Filter;
-use Moose;
+use Moo;
 # ABSTRACT: Streamed filtering (block oriented)
+
+use Types::Standard 'CodeRef';
 
 use Data::Stream::Bulk;
 
 use namespace::clean -except => 'meta';
 
 has filter => (
-	isa => "CodeRef",
+	isa => CodeRef,
 	reader => "filter_body",
 	required => 1,
 );
@@ -27,8 +29,6 @@ sub next {
 	local $_ = $self->stream->next;
 	return $_ && ( $self->filter_body->($_) || [] );
 }
-
-__PACKAGE__->meta->make_immutable;
 
 __PACKAGE__;
 

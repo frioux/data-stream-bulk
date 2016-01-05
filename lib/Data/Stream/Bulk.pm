@@ -1,5 +1,5 @@
 package Data::Stream::Bulk;
-use Moose::Role;
+use Moo::Role;
 # ABSTRACT: N at a time iteration API
 
 use namespace::clean -except => 'meta';

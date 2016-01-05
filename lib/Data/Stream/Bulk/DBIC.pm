@@ -2,12 +2,14 @@ package Data::Stream::Bulk::DBIC;
 use Moose;
 # ABSTRACT: Iterate DBIC resultsets with L<Data::Stream::Bulk>
 
+use Types::Standard 'Object';
+
 use namespace::clean -except => 'meta';
 
 with qw(Data::Stream::Bulk::DoneFlag) => { -excludes => [qw(is_done finished)] };
 
 has resultset => (
-	isa => "Object",
+	isa => Object,
 	clearer => "finished",
 	handles => { next_row => "next" },
 	required => 1,
@@ -22,8 +24,6 @@ sub get_more {
 		return;
 	}
 }
-
-__PACKAGE__->meta->make_immutable;
 
 __PACKAGE__;
 

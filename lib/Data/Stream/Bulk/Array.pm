@@ -1,13 +1,15 @@
 package Data::Stream::Bulk::Array;
-use Moose;
+use Moo;
 # ABSTRACT: L<Data::Stream::Bulk> wrapper for simple arrays.
 
 use namespace::clean -except => 'meta';
 
+use Types::Standard qw( ArrayRef );
+
 with qw(Data::Stream::Bulk) => { -excludes => [qw/loaded filter list_cat/] };
 
 has array => (
-	isa => "ArrayRef",
+	isa => ArrayRef,
 	reader  => "_array",
 	writer  => "_set_array",
 	clearer => "_clear_array",
@@ -62,8 +64,6 @@ sub filter {
 }
 
 sub loaded { 1 }
-
-__PACKAGE__->meta->make_immutable;
 
 __PACKAGE__;
 
